@@ -1,21 +1,25 @@
 import React from "react";
 import { useState } from "react";
-
-import produts from "../../data/products.json";
 import ProductCards from "../shop/ProductCards";
-
+import { useFetchAllProductsQuery } from "../../redux/feature/products/productsApi";
 function Search() {
+  const {
+    data: { products = [] } = {},
+    error,
+    isLoading,
+  } = useFetchAllProductsQuery({});
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
   function handlSearch() {
     const query = searchQuery.toLowerCase();
-    const filtered = produts.filter(
+    const filtered = products.filter(
       (produt) =>
         produt.name.toLocaleLowerCase().includes(query) ||
         produt.description.toLocaleLowerCase().includes(query)
     );
     setFilteredProducts(filtered);
   }
+
   return (
     <>
       <section className="section__container bg-primary-light">
